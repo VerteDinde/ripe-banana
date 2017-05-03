@@ -113,10 +113,18 @@ describe('Films API', () => {
         assert.equal(films.length, 2);
         assert.deepEqual(films[0], {
           _id: coraline._id,
+          studio: {
+            _id: laika._id,
+            name: laika.name
+          },
           title: coraline.title,
         });
         assert.include(films, {
           _id: kubo._id,
+          studio: {
+            _id: laika._id,
+            name: laika.name
+          },
           title: kubo.title
         });
       });
