@@ -127,7 +127,11 @@ describe('Films API', () => {
   });
 
   it('deletes a film', () => {
-    //
+    return request.delete(`/api/films/${kubo._id}`)
+      .then(res => res.body)
+      .then(result => {
+        assert.isTrue(result.removed);
+      });
   });
 
 });
