@@ -122,4 +122,12 @@ describe('Films API', () => {
       });
   });
 
+  it('updates a film with cast', () => {
+    //
+  });
+
+  it('deletes a film', () => {
+    //
+  });
+
 });

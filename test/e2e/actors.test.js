@@ -81,4 +81,34 @@ describe('Actors API', () => {
       });
   });
 
+  it('updates an actor', () => {
+    kateWinslet.dob = 2030;
+    return request.put(`/api/actors/${kateWinslet._id}`)
+      .send(kateWinslet)
+      .then(res => res.body)
+      .then(updated => {
+        assert.equal(updated.dob, 2030);
+      });
+
+  });
+
+  it('removes an actor', () => {
+    let rooneyMara = {
+      name: 'Rooney Mara',
+      dob: 1980,
+      film: ''
+    };
+    return saveActor(rooneyMara)
+      .then(saved => {
+        assert.ok(saved._id, 'saved has id');
+      })
+      .then(() => {
+        return request.delete(`/api/actors/${rooneyMara._id}`);
+      })
+      .then(res => res.body)
+      .then(result => {
+        assert.isTrue(result.removed);
+      });
+  });
+
 });
