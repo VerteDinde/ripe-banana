@@ -2,7 +2,7 @@ const request = require('./_request');
 const db = require('./_db');
 const assert = require('chai').assert;
 
-describe.only('Studios API', () => {
+describe('Studios API', () => {
 
   before(db.drop);
 
@@ -124,7 +124,6 @@ describe.only('Studios API', () => {
       });
   });
 
-  //DONE!: Studios cannot be deleted if they have films
   it('does not remove a studio with a film', () => {
     return request.delete(`/api/studios/${laika._id}`)
       .then(res => res.body)
