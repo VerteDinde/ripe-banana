@@ -2,7 +2,7 @@ const request = require('./_request');
 const db = require('./_db');
 const assert = require('chai').assert;
 
-describe('Studios API', () => {
+describe.only('Studios API', () => {
 
   before(db.drop);
 
@@ -99,11 +99,38 @@ describe('Studios API', () => {
 
   });
 
+  it('save a film with studio', () => {
+
+    let coraline = {
+      title: 'Coraline',
+      studio: laika._id,
+      released: '2005',
+      cast: []
+    };
+    return request.post('/api/films')
+      .send(coraline)
+      .then(res => res.body)
+      .then(saved => {
+        assert.ok(saved._id, 'saved has id');
+        coraline = saved;
+      });
+  });
+
   it('removes a studio', () => {
-    return request.delete(`/api/studios/${laika._id}`)
+    return request.delete(`/api/studios/${paramount._id}`)
       .then(res => res.body)
       .then(result => {
         assert.isTrue(result.removed);
+      });
+  });
+
+  //DONE!: Studios cannot be deleted if they have films
+  it('does not remove a studio with a film', () => {
+    return request.delete(`/api/studios/${laika._id}`)
+      .then(res => res.body)
+      .then(() => { throw new Error('expected 401'); },
+      res => {
+        assert.equal(res.status, '401');
       });
   });
 
