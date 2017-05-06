@@ -111,7 +111,6 @@ describe('Actors API', () => {
       });
   });
 
-  //TODO: Actors cannot be deleted if they are in a film
   it('cannot remove an actor with film', () => {
     return request.delete(`/api/actors/${kateWinslet._id}`)
       .then(res => res.body)
