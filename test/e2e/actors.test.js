@@ -59,7 +59,7 @@ describe('Actors API', () => {
       .then(res => res.body);
   }
 
-  it('save an actor with a film', () => {
+  it.only('save an actor with a film', () => {
     kateWinslet.film = gbbo;
     return saveActor(kateWinslet)
       .then(saved => {
@@ -91,20 +91,29 @@ describe('Actors API', () => {
       });
 
   });
-  //TODO: Actors cannot be deleted if they are in a film
-  it('removes an actor', () => {
+
+  it.only('removes an actor', () => {
     let rooneyMara = {
       name: 'Rooney Mara',
-      dob: 1980,
-      film: ''
+      dob: 1980
     };
     return saveActor(rooneyMara)
       .then(saved => {
         assert.ok(saved._id, 'saved has id');
+        rooneyMara = saved;
       })
       .then(() => {
         return request.delete(`/api/actors/${rooneyMara._id}`);
       })
+      .then(res => res.body)
+      .then(result => {
+        assert.isTrue(result.removed);
+      });
+  });
+
+  //TODO: Actors cannot be deleted if they are in a film
+  it('cannot remove an actor with film', () => {
+    return request.delete(`/api/actors/${kateWinslet._id}`)
       .then(res => res.body)
       .then(result => {
         assert.isTrue(result.removed);
